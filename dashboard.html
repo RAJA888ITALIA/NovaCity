@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Autofficina SaaS</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #0a0a0a;
+      color: #777;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ── SIDEBAR ── */
+    aside {
+      width: 224px;
+      min-width: 224px;
+      background: #0f0f0f;
+      border-right: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background-image: radial-gradient(circle, #1a1a1a 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .logo-wrap {
+      padding: 18px 18px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(249,115,22,0.3);
+    }
+
+    nav { padding: 12px 10px; flex: 1; display: flex; flex-direction: column; gap: 2px; }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 9px 12px;
+      border-radius: 9px;
+      font-size: 13px; font-weight: 500;
+      color: #484848;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1px solid transparent;
+      background: none;
+      width: 100%; text-align: left;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .nav-item:hover { color: #aaa; background: rgba(255,255,255,0.02); }
+    .nav-item.active {
+      color: #fff;
+      background: rgba(249,115,22,0.07);
+      border-color: rgba(249,115,22,0.13);
+    }
+    .nav-item.active .nav-icon { color: #f97316; }
+    .nav-icon { width: 15px; height: 15px; flex-shrink: 0; }
+
+    .sidebar-footer {
+      padding: 12px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .avatar {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: rgba(249,115,22,0.1);
+      border: 1px solid rgba(249,115,22,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 12px; color: #f97316;
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      overflow-y: auto;
+      height: 100vh;
+      padding: 28px 32px;
+      max-width: 1500px; /* prevents stretching on wide screens */
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .page-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 20px;
+      color: #fff; letter-spacing: -0.02em;
+    }
+    .page-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; color: #2e2e2e;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── STAT CARDS ── */
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+    .stat-card {
+      background: #131313;
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 14px;
+      padding: 18px 20px;
+      position: relative; overflow: hidden;
+    }
+    .stat-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.012) 1px, transparent 1px);
+      background-size: 14px 14px;
+      pointer-events: none;
+    }
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em;
+      display: block; margin-bottom: 8px;
+    }
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 36px; line-height: 1;
+    }
+    .stat-icon {
+      position: absolute; right: 16px; bottom: 14px;
+      font-size: 20px; opacity: 0.12;
+    }
+
+    /* ── SECTION CARD ── */
+    .card {
+      background: #131313;
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .card-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 13px; color: #ddd;
+    }
+    .card-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; color: #2e2e2e;
+      margin-top: 2px;
+    }
+
+    /* ── TABLE ── */
+    table { border-collapse: collapse; width: 100%; }
+    thead tr { background: rgba(255,255,255,0.015); }
+    th {
+      padding: 9px 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em;
+      color: #333; font-weight: 500; text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    td { padding: 11px 16px; font-size: 12.5px; }
+    tbody tr { border-bottom: 1px solid rgba(255,255,255,0.025); transition: background 0.12s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.012); }
+
+    .targa-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; font-weight: 700;
+      color: #f97316;
+      background: rgba(249,115,22,0.07);
+      border: 1px solid rgba(249,115,22,0.14);
+      padding: 2px 7px; border-radius: 5px;
+    }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 3px 8px; border-radius: 5px; font-weight: 500;
+    }
+    .pill-red   { background: rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.16); color:#f87171; }
+    .pill-yellow{ background: rgba(234,179,8,0.08); border:1px solid rgba(234,179,8,0.16); color:#fbbf24; }
+    .pill-green { background: rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.14); color:#34d399; }
+    .pill-gray  { background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); color:#3a3a3a; }
+    .pill-purple{ background: rgba(139,92,246,0.08); border:1px solid rgba(139,92,246,0.16); color:#a78bfa; }
+
+    /* ── FILTER TABS ── */
+    .filter-tabs { display: flex; gap: 6px; }
+    .ftab {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em;
+      padding: 5px 12px; border-radius: 7px;
+      border: 1px solid transparent; cursor: pointer;
+      transition: all 0.14s; background: none; color: #333;
+    }
+    .ftab:hover { color: #666; background: rgba(255,255,255,0.02); }
+    .ftab.active { background: rgba(249,115,22,0.09); border-color: rgba(249,115,22,0.18); color: #f97316; }
+
+    /* ── SEARCH ── */
+    .search-wrap { position: relative; }
+    .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; color: #2e2e2e; pointer-events: none; }
+    .search-input {
+      background: #0f0f0f;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 9px;
+      padding: 8px 12px 8px 32px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12px; color: #ccc;
+      outline: none; width: 220px;
+      transition: border-color 0.15s;
+    }
+    .search-input:focus { border-color: rgba(249,115,22,0.3); }
+    .search-input::placeholder { color: #2e2e2e; }
+
+    /* ── FORM FIELDS ── */
+    .field {
+      width: 100%;
+      background: #0f0f0f;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 9px;
+      padding: 9px 13px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12.5px; color: #ccc;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      appearance: none; -webkit-appearance: none;
+    }
+    .field:focus { border-color: rgba(249,115,22,0.35); box-shadow: 0 0 0 3px rgba(249,115,22,0.07); }
+    .field::placeholder { color: #2a2a2a; }
+    select.field {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23444' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 11px center;
+      padding-right: 30px;
+      cursor: pointer;
+    }
+    .field-label {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em;
+      color: #333; margin-bottom: 6px;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      background: #f97316; color: #fff;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px;
+      letter-spacing: 0.02em;
+      border: none; border-radius: 9px; padding: 10px 18px;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+      transition: transform 0.12s, box-shadow 0.12s;
+      box-shadow: 0 3px 12px rgba(249,115,22,0.22);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(249,115,22,0.32); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.03); color: #555;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 12px;
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 9px; padding: 10px 16px;
+      cursor: pointer; transition: all 0.14s; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.05); color: #aaa; }
+
+    .btn-danger-sm {
+      background: rgba(239,68,68,0.07); color: #f87171;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 11px;
+      border: 1px solid rgba(239,68,68,0.14); border-radius: 7px; padding: 6px 12px;
+      cursor: pointer; transition: all 0.14s;
+    }
+    .btn-danger-sm:hover { background: rgba(239,68,68,0.13); }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      background: rgba(249,115,22,0.04);
+      border: 1px solid rgba(249,115,22,0.1);
+      border-radius: 10px; padding: 14px 16px;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center; padding: 40px 20px;
+      font-family: 'DM Mono', monospace; font-size: 11px; color: #282828;
+    }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 20px; right: 20px;
+      padding: 11px 16px; border-radius: 10px; z-index: 999;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+      transform: translateY(60px); opacity: 0;
+      transition: all 0.28s cubic-bezier(0.34,1.56,0.64,1);
+      pointer-events: none;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #1e1e1e; border-radius: 2px; }
+
+    /* Hidden util */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<aside>
+  <div class="logo-wrap">
+    <div class="logo-icon">
+      <svg width="18" height="18" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75"/>
+      </svg>
+    </div>
+    <div>
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:13px;line-height:1;">Autofficina</div>
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:#f97316;letter-spacing:0.15em;margin-top:2px;">SAAS PLATFORM</div>
+    </div>
+  </div>
+
+  <nav>
+    <button class="nav-item active" onclick="switchTab('dashboard')">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Panoramica
+    </button>
+    <button class="nav-item" onclick="switchTab('nuovo-cliente')">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+      Nuovo Cliente
+    </button>
+    <button class="nav-item" onclick="switchTab('registro')">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      Registro Clienti
+    </button>
+    <button class="nav-item" onclick="switchTab('modifica')">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>
+      Modifica Cliente
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div style="display:flex;align-items:center;gap:9px;">
+      <div class="avatar"><span id="avatar-initial">?</span></div>
+      <div>
+        <div id="nome-officina-txt" style="font-size:11px;font-weight:600;color:#bbb;font-family:'Plus Jakarta Sans',sans-serif;line-height:1;">—</div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:#2a2a2a;margin-top:2px;">Gestore</div>
+      </div>
+    </div>
+    <button onclick="logout()" title="Disconnetti" style="background:none;border:none;cursor:pointer;color:#2a2a2a;padding:4px;border-radius:6px;transition:color 0.14s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#2a2a2a'">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<main>
+
+  <!-- ── TAB: PANORAMICA ── -->
+  <div id="tab-dashboard">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Panoramica</div>
+        <div class="page-sub">Scaduti e in scadenza — richiede attenzione</div>
+      </div>
+      <div class="search-wrap">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+        <input id="search-input" type="text" placeholder="Cerca targa o nome…" class="search-input" />
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-label" style="color:#333;">Totale clienti</span>
+        <div class="stat-value" style="color:#fff;" id="stat-totali">0</div>
+        <div class="stat-icon">👤</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label" style="color:#a16207;">In scadenza (30gg)</span>
+        <div class="stat-value" style="color:#fbbf24;" id="stat-mese">0</div>
+        <div class="stat-icon">⚠️</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label" style="color:#991b1b;">Scaduti</span>
+        <div class="stat-value" style="color:#f87171;" id="stat-scadute">0</div>
+        <div class="stat-icon">🚨</div>
+      </div>
+    </div>
+
+    <!-- Urgency table: scaduti + in scadenza only -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Interventi urgenti</div>
+          <div class="card-sub">Solo scaduti e in scadenza entro 30 giorni</div>
+        </div>
+        <div class="filter-tabs">
+          <button class="ftab active" id="ftab-tutti"      onclick="setFiltro('tutti')">Tutti</button>
+          <button class="ftab"        id="ftab-revisione"  onclick="setFiltro('revisione')">Revisioni</button>
+          <button class="ftab"        id="ftab-tagliando"  onclick="setFiltro('tagliando')">Tagliandi</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr>
+            <th>Nominativo</th>
+            <th>Targa</th>
+            <th>Telefono</th>
+            <th>Tipo</th>
+            <th>Scadenza</th>
+            <th>SMS</th>
+            <th style="text-align:right;">Stato</th>
+          </tr></thead>
+          <tbody id="tabella-urgenti">
+            <tr><td colspan="7" class="empty-state">Connessione al database…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: NUOVO CLIENTE ── -->
+  <div id="tab-nuovo-cliente" class="hidden">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Nuovo Cliente</div>
+        <div class="page-sub">Registra un veicolo e imposta la prossima scadenza</div>
+      </div>
+    </div>
+
+    <div class="card" style="max-width:680px;">
+      <div class="card-header"><div class="card-title">Dati anagrafica</div></div>
+      <form id="form-cliente" onsubmit="aggiungiCliente(event)" style="padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div><label class="field-label">Nome *</label><input id="form-nome" type="text" required placeholder="Es. Marco" class="field"/></div>
+        <div><label class="field-label">Cognome</label><input id="form-cognome" type="text" placeholder="Es. Bianchi" class="field"/></div>
+        <div><label class="field-label">Telefono *</label><input id="form-telefono" type="tel" required placeholder="Es. 3331234567" class="field" style="font-family:'DM Mono',monospace;"/></div>
+        <div><label class="field-label">Targa *</label><input id="form-targa" type="text" required placeholder="Es. AB123CD" class="field" style="font-family:'DM Mono',monospace;text-transform:uppercase;"/></div>
+        <div><label class="field-label">Tipo scadenza *</label>
+          <select id="form-tipo" class="field">
+            <option value="revisione">Revisione Ministeriale</option>
+            <option value="tagliando">Tagliando Periodico</option>
+          </select>
+        </div>
+        <div><label class="field-label">Data scadenza *</label><input id="form-data" type="date" required class="field" style="font-family:'DM Mono',monospace;"/></div>
+
+        <div style="grid-column:1/-1;">
+          <div class="info-box">
+            <svg width="15" height="15" style="color:#f97316;flex-shrink:0;margin-top:1px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/></svg>
+            <div>
+              <div style="font-size:11px;font-weight:600;color:#f97316;margin-bottom:3px;">Notifica SMS automatica</div>
+              <div style="font-size:11px;color:#3a3a3a;line-height:1.5;">Il sistema invierà un SMS al cliente 7 giorni prima della scadenza con il link alla pagina <span style="font-family:'DM Mono',monospace;color:#f97316;font-size:10px;">/cliente.html?targa=XX</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="grid-column:1/-1;display:flex;justify-content:flex-end;gap:10px;padding-top:4px;">
+          <button type="reset" class="btn-ghost">Pulisci</button>
+          <button type="submit" class="btn-primary">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            Salva nel database
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── TAB: REGISTRO CLIENTI ── -->
+  <div id="tab-registro" class="hidden">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Registro Clienti</div>
+        <div class="page-sub">Tutti i clienti con scadenza regolare</div>
+      </div>
+      <div class="search-wrap">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+        <input id="registro-search" type="text" placeholder="Cerca targa o nome…" class="search-input" oninput="renderRegistro()" />
+      </div>
+    </div>
+    <div class="card">
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr>
+            <th>Nominativo</th>
+            <th>Targa</th>
+            <th>Telefono</th>
+            <th>Tipo</th>
+            <th>Scadenza</th>
+            <th>SMS</th>
+            <th style="text-align:right;">Giorni rimanenti</th>
+          </tr></thead>
+          <tbody id="tabella-registro">
+            <tr><td colspan="7" class="empty-state">Caricamento…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: MODIFICA CLIENTE ── -->
+  <div id="tab-modifica" class="hidden">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Modifica Cliente</div>
+        <div class="page-sub">Cerca per targa o nome e aggiorna i dati</div>
+      </div>
+    </div>
+
+    <div class="card" style="max-width:680px;">
+      <div class="card-header"><div class="card-title">Cerca cliente</div></div>
+      <div style="padding:16px 20px;">
+        <div class="search-wrap" style="width:100%;">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+          <input id="modifica-search" type="text" placeholder="Inserisci targa o nome…" class="search-input" style="width:100%;" oninput="filtraClientiModifica(this.value)" />
+        </div>
+      </div>
+      <div id="modifica-lista" style="border-top:1px solid rgba(255,255,255,0.04);">
+        <div class="empty-state">Inizia a digitare per cercare un cliente…</div>
+      </div>
+    </div>
+
+    <!-- Edit form -->
+    <div id="modifica-form-wrap" class="card hidden" style="max-width:680px;">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Modifica dati</div>
+          <div id="modifica-subtitle" class="card-sub"></div>
+        </div>
+        <button class="btn-danger-sm" onclick="chiudiModifica()">✕ Annulla</button>
+      </div>
+      <form id="form-modifica" onsubmit="salvaModifica(event)" style="padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <input type="hidden" id="modifica-cliente-id" />
+        <input type="hidden" id="modifica-scadenza-id" />
+        <div><label class="field-label">Nome *</label><input id="modifica-nome" type="text" required class="field"/></div>
+        <div><label class="field-label">Cognome</label><input id="modifica-cognome" type="text" class="field"/></div>
+        <div><label class="field-label">Telefono *</label><input id="modifica-telefono" type="tel" required class="field" style="font-family:'DM Mono',monospace;"/></div>
+        <div><label class="field-label">Targa *</label><input id="modifica-targa" type="text" required class="field" style="font-family:'DM Mono',monospace;text-transform:uppercase;"/></div>
+        <div><label class="field-label">Tipo scadenza</label>
+          <select id="modifica-tipo" class="field">
+            <option value="revisione">Revisione Ministeriale</option>
+            <option value="tagliando">Tagliando Periodico</option>
+          </select>
+        </div>
+        <div><label class="field-label">Data scadenza</label><input id="modifica-data" type="date" class="field" style="font-family:'DM Mono',monospace;"/></div>
+        <div style="grid-column:1/-1;display:flex;justify-content:flex-end;padding-top:4px;">
+          <button type="submit" class="btn-primary">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+            Salva modifiche
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</main>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ── AUTH ──────────────────────────────────────────────────
+const token = localStorage.getItem('token');
+const officinaRaw = localStorage.getItem('officina');
+if (!token || !officinaRaw) { window.location.href = '/login.html'; }
+else {
+  const off = JSON.parse(officinaRaw);
+  document.getElementById('nome-officina-txt').textContent = off.nome_officina || 'Officina';
+  document.getElementById('avatar-initial').textContent = (off.nome_officina || 'O')[0].toUpperCase();
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────
+const TABS = ['dashboard','nuovo-cliente','registro','modifica'];
+function switchTab(name) {
+  TABS.forEach(t => document.getElementById('tab-' + t).classList.toggle('hidden', t !== name));
+  document.querySelectorAll('.nav-item').forEach((btn, i) => btn.classList.toggle('active', TABS[i] === name));
+  if (name === 'registro') renderRegistro();
+}
+
+// ── DATA ──────────────────────────────────────────────────
+let elencoScadenze = [];
+let filtroAttivo = 'tutti';
+
+async function aggiornaDatiTabella() {
+  try {
+    const res = await fetch('/api/scadenze', { headers: { 'Authorization': `Bearer ${token}` } });
+    if (!res.ok) throw new Error('Errore ' + res.status);
+    elencoScadenze = await res.json();
+    renderUrgenti();
+    aggiornaContatori();
+  } catch (err) {
+    console.error(err);
+    document.getElementById('tabella-urgenti').innerHTML =
+      `<tr><td colspan="7" class="empty-state" style="color:#ef4444;">Errore: ${err.message}</td></tr>`;
+  }
+}
+
+function aggiornaContatori() {
+  const oggi = new Date(); oggi.setHours(0,0,0,0);
+  let mese = 0, scaduti = 0;
+  elencoScadenze.forEach(item => {
+    if (!item.data_scadenza) return;
+    const d = new Date(item.data_scadenza); d.setHours(0,0,0,0);
+    const diff = Math.ceil((d - oggi) / 86400000);
+    if (diff < 0 && item.stato_notifica !== 'completata') scaduti++;
+    if (diff >= 0 && diff <= 30) mese++;
+  });
+  document.getElementById('stat-totali').textContent = elencoScadenze.length;
+  document.getElementById('stat-mese').textContent = mese;
+  document.getElementById('stat-scadute').textContent = scaduti;
+}
+
+// ── PANORAMICA: urgenti only (scaduti + entro 30gg) ───────
+function renderUrgenti() {
+  const tbody = document.getElementById('tabella-urgenti');
+  const oggi = new Date(); oggi.setHours(0,0,0,0);
+  const q = (document.getElementById('search-input').value || '').toLowerCase();
+
+  const urgenti = elencoScadenze.filter(item => {
+    if (!item.data_scadenza) return false;
+    const d = new Date(item.data_scadenza); d.setHours(0,0,0,0);
+    const diff = Math.ceil((d - oggi) / 86400000);
+    const isUrgent = diff <= 30; // scaduti (diff<0) e in scadenza (0-30)
+    const matchTipo = filtroAttivo === 'tutti' || item.tipo_scadenza === filtroAttivo;
+    const matchQ = !q || (item.targa||'').toLowerCase().includes(q) ||
+                   (item.nome||'').toLowerCase().includes(q) ||
+                   (item.cognome||'').toLowerCase().includes(q);
+    return isUrgent && matchTipo && matchQ;
+  });
+
+  if (urgenti.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="empty-state">Nessun intervento urgente. ✓</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = '';
+  urgenti.forEach(item => {
+    const d = new Date(item.data_scadenza); d.setHours(0,0,0,0);
+    const diff = Math.ceil((d - oggi) / 86400000);
+    const statoBadge = diff < 0
+      ? `<span class="pill pill-red">Scaduto ${Math.abs(diff)}gg fa</span>`
+      : `<span class="pill pill-yellow">Scade in ${diff}gg</span>`;
+    const smsBadge = item.stato_notifica === 'inviata'
+      ? `<span class="pill pill-green">✓ Inviato</span>`
+      : item.stato_notifica === 'completata'
+      ? `<span class="pill pill-purple">✓ Completato</span>`
+      : `<span class="pill pill-gray">In attesa</span>`;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="color:#ccc;font-weight:600;">${item.nome||''} ${item.cognome||''}</td>
+      <td><span class="targa-badge">${(item.targa||'').toUpperCase()}</span></td>
+      <td style="font-family:'DM Mono',monospace;font-size:11px;color:#444;">${item.telefono||'—'}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:10px;color:#3a3a3a;text-transform:uppercase;">${item.tipo_scadenza||'N/D'}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:11px;color:#555;">${d.toLocaleDateString('it-IT')}</td>
+      <td>${smsBadge}</td>
+      <td style="text-align:right;">${statoBadge}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── REGISTRO CLIENTI: regolari only ───────────────────────
+function renderRegistro() {
+  const tbody = document.getElementById('tabella-registro');
+  const oggi = new Date(); oggi.setHours(0,0,0,0);
+  const q = (document.getElementById('registro-search').value || '').toLowerCase();
+
+  const regolari = elencoScadenze.filter(item => {
+    if (!item.data_scadenza) return false;
+    const d = new Date(item.data_scadenza); d.setHours(0,0,0,0);
+    const diff = Math.ceil((d - oggi) / 86400000);
+    const isOk = true;
+    const matchQ = !q || (item.targa||'').toLowerCase().includes(q) ||
+                   (item.nome||'').toLowerCase().includes(q) ||
+                   (item.cognome||'').toLowerCase().includes(q);
+    return isOk && matchQ;
+  });
+
+  if (regolari.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="empty-state">Nessun cliente con scadenza regolare.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = '';
+  regolari.forEach(item => {
+    const d = new Date(item.data_scadenza); d.setHours(0,0,0,0);
+    const diff = Math.ceil((d - oggi) / 86400000);
+    const smsBadge = item.stato_notifica === 'inviata'
+      ? `<span class="pill pill-green">✓ Inviato</span>`
+      : `<span class="pill pill-gray">In attesa</span>`;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="color:#ccc;font-weight:600;">${item.nome||''} ${item.cognome||''}</td>
+      <td><span class="targa-badge">${(item.targa||'').toUpperCase()}</span></td>
+      <td style="font-family:'DM Mono',monospace;font-size:11px;color:#444;">${item.telefono||'—'}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:10px;color:#3a3a3a;text-transform:uppercase;">${item.tipo_scadenza||'N/D'}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:11px;color:#555;">${d.toLocaleDateString('it-IT')}</td>
+      <td>${smsBadge}</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace;font-size:11px;color:${diff < 0 ? '#f87171' : diff <= 30 ? '#fbbf24' : '#34d399'};">${diff} giorni</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── FILTER TABS ───────────────────────────────────────────
+function setFiltro(tipo) {
+  filtroAttivo = tipo;
+  ['tutti','revisione','tagliando'].forEach(t => {
+    document.getElementById('ftab-' + t).classList.toggle('active', t === tipo);
+  });
+  renderUrgenti();
+}
+
+document.getElementById('search-input').addEventListener('input', renderUrgenti);
+
+// ── ADD CLIENT ────────────────────────────────────────────
+async function aggiungiCliente(e) {
+  e.preventDefault();
+  const payload = {
+    nome: document.getElementById('form-nome').value.trim(),
+    cognome: document.getElementById('form-cognome').value.trim(),
+    telefono: document.getElementById('form-telefono').value.trim(),
+    targa: document.getElementById('form-targa').value.trim(),
+    tipo_scadenza: document.getElementById('form-tipo').value,
+    data_scadenza: document.getElementById('form-data').value,
+  };
+  try {
+    const res = await fetch('/api/scadenze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.errore || 'Errore salvataggio');
+    mostraToast('✓ ' + data.messaggio, 'success');
+    document.getElementById('form-cliente').reset();
+    await aggiornaDatiTabella();
+    switchTab('dashboard');
+  } catch (err) { mostraToast('✕ ' + err.message, 'error'); }
+}
+
+// ── MODIFICA CLIENT ───────────────────────────────────────
+function filtraClientiModifica(q) {
+  const lista = document.getElementById('modifica-lista');
+  if (!q.trim()) {
+    lista.innerHTML = `<div class="empty-state">Inizia a digitare per cercare un cliente…</div>`;
+    return;
+  }
+  const lower = q.toLowerCase();
+  const matches = elencoScadenze.filter(item =>
+    (item.targa||'').toLowerCase().includes(lower) ||
+    (item.nome||'').toLowerCase().includes(lower) ||
+    (item.cognome||'').toLowerCase().includes(lower)
+  );
+  if (!matches.length) {
+    lista.innerHTML = `<div class="empty-state">Nessun cliente trovato.</div>`;
+    return;
+  }
+  lista.innerHTML = matches.map(item => `
+    <div onclick='apriModifica(${JSON.stringify(item)})'
+      style="padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer;
+             display:flex;align-items:center;justify-content:space-between;transition:background 0.12s;"
+      onmouseover="this.style.background='rgba(255,255,255,0.015)'"
+      onmouseout="this.style.background='transparent'">
+      <div>
+        <div style="color:#ccc;font-weight:600;font-size:13px;">${item.nome||''} ${item.cognome||''}</div>
+        <div style="color:#333;font-size:10px;font-family:'DM Mono',monospace;margin-top:2px;">${item.telefono||'—'}</div>
+      </div>
+      <span class="targa-badge">${(item.targa||'').toUpperCase()}</span>
+    </div>`).join('');
+}
+
+function apriModifica(item) {
+  document.getElementById('modifica-cliente-id').value = item.cliente_id;
+  document.getElementById('modifica-scadenza-id').value = item.scadenza_id;
+  document.getElementById('modifica-nome').value = item.nome || '';
+  document.getElementById('modifica-cognome').value = item.cognome || '';
+  document.getElementById('modifica-telefono').value = item.telefono || '';
+  document.getElementById('modifica-targa').value = item.targa || '';
+  document.getElementById('modifica-tipo').value = item.tipo_scadenza || 'revisione';
+  document.getElementById('modifica-data').value = item.data_scadenza ? item.data_scadenza.split('T')[0] : '';
+  document.getElementById('modifica-subtitle').textContent =
+    `Targa: ${(item.targa||'').toUpperCase()} · ID: ${item.cliente_id}`;
+  document.getElementById('modifica-form-wrap').classList.remove('hidden');
+  document.getElementById('modifica-form-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function chiudiModifica() {
+  document.getElementById('modifica-form-wrap').classList.add('hidden');
+  document.getElementById('modifica-search').value = '';
+  document.getElementById('modifica-lista').innerHTML = `<div class="empty-state">Inizia a digitare per cercare un cliente…</div>`;
+}
+
+async function salvaModifica(e) {
+  e.preventDefault();
+  const clienteId = document.getElementById('modifica-cliente-id').value;
+  const payload = {
+    nome: document.getElementById('modifica-nome').value.trim(),
+    cognome: document.getElementById('modifica-cognome').value.trim(),
+    telefono: document.getElementById('modifica-telefono').value.trim(),
+    targa: document.getElementById('modifica-targa').value.trim(),
+    tipo_scadenza: document.getElementById('modifica-tipo').value,
+    data_scadenza: document.getElementById('modifica-data').value,
+    scadenza_id: document.getElementById('modifica-scadenza-id').value,
+  };
+  try {
+    const res = await fetch(`/api/clienti/${clienteId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.errore || 'Errore aggiornamento');
+    mostraToast('✓ Cliente aggiornato!', 'success');
+    chiudiModifica();
+    await aggiornaDatiTabella();
+  } catch (err) { mostraToast('✕ ' + err.message, 'error'); }
+}
+
+// ── TOAST ─────────────────────────────────────────────────
+function mostraToast(msg, tipo) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = '#161616';
+  t.style.border = tipo === 'success' ? '1px solid rgba(16,185,129,0.2)' : '1px solid rgba(239,68,68,0.2)';
+  t.style.color = tipo === 'success' ? '#34d399' : '#f87171';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── LOGOUT ────────────────────────────────────────────────
+function logout() { localStorage.clear(); window.location.href = '/login.html'; }
+
+// ── INIT ──────────────────────────────────────────────────
+aggiornaDatiTabella();
+</script>
+</body>
+</html>

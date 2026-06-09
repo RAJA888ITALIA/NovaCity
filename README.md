@@ -6,6 +6,11 @@ NovaCity is a PHP-based web application developed for user management and report
 
 The project includes authentication systems, user profiles, dashboard management, report creation, and SMTP email integration.
 
+🌐 Live Demo:
+https://novacity.kesug.com
+
+If the live demo is unavailable, the project can still be run locally using the installation guide below.
+
 ---
 
 ## Features
@@ -18,6 +23,8 @@ The project includes authentication systems, user profiles, dashboard management
 * Email verification and notifications
 * Admin panel for users and reports
 * Responsive frontend design
+* User profile picture upload support
+* Report status management system
 
 ---
 
@@ -29,6 +36,7 @@ The project includes authentication systems, user profiles, dashboard management
 * CSS3
 * JavaScript
 * PHPMailer
+* Apache Server
 
 ---
 
@@ -65,7 +73,13 @@ Edit:
 /private/config.php
 ```
 
-### 4. Import your MySQL database
+### 4. Import the provided MySQL database export
+
+Import the included SQL file into your MySQL database using:
+
+* phpMyAdmin
+* MySQL Workbench
+* command line tools
 
 ### 5. Run the project using:
 
@@ -96,6 +110,8 @@ to protect passwords and private configuration data.
 * API integrations
 * Real-time notifications
 * Mobile optimization
+* Better security validation
+* Dark mode support
 
 ---
 
@@ -112,6 +128,11 @@ NovaCity è una web application sviluppata in PHP per la gestione utenti e la cr
 
 Il progetto include sistemi di autenticazione, gestione profili, dashboard utenti, creazione report e integrazione email tramite SMTP.
 
+🌐 Demo Live:
+https://novacity.kesug.com
+
+Se la demo non fosse disponibile, il progetto può comunque essere eseguito localmente seguendo la guida di installazione qui sotto.
+
 ---
 
 ## Funzionalità
@@ -124,6 +145,8 @@ Il progetto include sistemi di autenticazione, gestione profili, dashboard utent
 * Verifica email e notifiche
 * Pannello admin per utenti e report
 * Design responsive
+* Supporto upload immagini profilo
+* Sistema gestione stato report
 
 ---
 
@@ -135,6 +158,7 @@ Il progetto include sistemi di autenticazione, gestione profili, dashboard utent
 * CSS3
 * JavaScript
 * PHPMailer
+* Apache Server
 
 ---
 
@@ -171,7 +195,13 @@ Modifica:
 /private/config.php
 ```
 
-### 4. Importa il database MySQL
+### 4. Importa il database MySQL fornito
+
+Importa il file SQL incluso usando:
+
+* phpMyAdmin
+* MySQL Workbench
+* strumenti da linea di comando
 
 ### 5. Avvia il progetto usando:
 
@@ -202,10 +232,12 @@ per proteggere password e configurazioni private.
 * Integrazione API
 * Notifiche real-time
 * Ottimizzazione mobile
+* Migliori controlli sicurezza
+* Supporto dark mode
 
 ---
 
 ## Autore
 
-Raja
+Faisal Raja Zain
 GitHub: https://github.com/RAJA888ITALIA

@@ -89,7 +89,7 @@
       font-weight: 700; font-size: 12px; color: #f97316;
     }
 
-    /* ── MAIN ── */
+    /* MAIN */
     main {
       flex: 1;
       overflow-y: auto;
@@ -98,7 +98,7 @@
       max-width: 1500px; /* prevents stretching on wide screens */
     }
 
-    /* ── PAGE HEADER ── */
+    /* PAGE HEADER */
     .page-header {
       display: flex; align-items: flex-start; justify-content: space-between;
       margin-bottom: 24px;
@@ -117,7 +117,7 @@
       margin-top: 4px;
     }
 
-    /* ── STAT CARDS ── */
+    /* STAT CARDS */
     .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
     .stat-card {
       background: #131313;
@@ -147,7 +147,7 @@
       font-size: 20px; opacity: 0.12;
     }
 
-    /* ── SECTION CARD ── */
+    /*SECTION CARD*/
     .card {
       background: #131313;
       border: 1px solid rgba(255,255,255,0.04);
@@ -170,7 +170,7 @@
       margin-top: 2px;
     }
 
-    /* ── TABLE ── */
+    /*TABLE*/
     table { border-collapse: collapse; width: 100%; }
     thead tr { background: rgba(255,255,255,0.015); }
     th {
@@ -206,7 +206,7 @@
     .pill-gray  { background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); color:#3a3a3a; }
     .pill-purple{ background: rgba(139,92,246,0.08); border:1px solid rgba(139,92,246,0.16); color:#a78bfa; }
 
-    /* ── FILTER TABS ── */
+    /* FILTER TABS */
     .filter-tabs { display: flex; gap: 6px; }
     .ftab {
       font-family: 'DM Mono', monospace;
@@ -218,7 +218,7 @@
     .ftab:hover { color: #666; background: rgba(255,255,255,0.02); }
     .ftab.active { background: rgba(249,115,22,0.09); border-color: rgba(249,115,22,0.18); color: #f97316; }
 
-    /* ── SEARCH ── */
+    /* SEARCH */
     .search-wrap { position: relative; }
     .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; color: #2e2e2e; pointer-events: none; }
     .search-input {
@@ -234,7 +234,7 @@
     .search-input:focus { border-color: rgba(249,115,22,0.3); }
     .search-input::placeholder { color: #2e2e2e; }
 
-    /* ── FORM FIELDS ── */
+    /* FORM FIELDS */
     .field {
       width: 100%;
       background: #0f0f0f;
@@ -263,7 +263,7 @@
       color: #333; margin-bottom: 6px;
     }
 
-    /* ── BUTTONS ── */
+    /* BUTTONS */
     .btn-primary {
       background: #f97316; color: #fff;
       font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px;
@@ -292,7 +292,7 @@
     }
     .btn-danger-sm:hover { background: rgba(239,68,68,0.13); }
 
-    /* ── INFO BOX ── */
+    /* INFO BOX */
     .info-box {
       background: rgba(249,115,22,0.04);
       border: 1px solid rgba(249,115,22,0.1);
@@ -300,13 +300,13 @@
       display: flex; gap: 10px; align-items: flex-start;
     }
 
-    /* ── EMPTY STATE ── */
+    /* EMPTY STATE */
     .empty-state {
       text-align: center; padding: 40px 20px;
       font-family: 'DM Mono', monospace; font-size: 11px; color: #282828;
     }
 
-    /* ── TOAST ── */
+    /* TOAST */
     #toast {
       position: fixed; bottom: 20px; right: 20px;
       padding: 11px 16px; border-radius: 10px; z-index: 999;
@@ -318,7 +318,7 @@
     }
     #toast.show { transform: translateY(0); opacity: 1; }
 
-    /* ── SCROLLBAR ── */
+    /* SCROLLBAR */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #1e1e1e; border-radius: 2px; }
@@ -329,7 +329,7 @@
 </head>
 <body>
 
-<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<!-- SIDEBAR  -->
 <aside>
   <div class="logo-wrap">
     <div class="logo-icon">
@@ -376,10 +376,10 @@
   </div>
 </aside>
 
-<!-- ═══════════════════ MAIN ═══════════════════ -->
+<!-- MAIN -->
 <main>
 
-  <!-- ── TAB: PANORAMICA ── -->
+  <!-- TAB: PANORAMICA -->
   <div id="tab-dashboard">
     <div class="page-header">
       <div>
@@ -443,7 +443,7 @@
     </div>
   </div>
 
-  <!-- ── TAB: NUOVO CLIENTE ── -->
+  <!-- TAB: NUOVO CLIENTE -->
   <div id="tab-nuovo-cliente" class="hidden">
     <div class="page-header">
       <div>
@@ -488,7 +488,7 @@
     </div>
   </div>
 
-  <!-- ── TAB: REGISTRO CLIENTI ── -->
+  <!-- TAB: REGISTRO CLIENTI -->
   <div id="tab-registro" class="hidden">
     <div class="page-header">
       <div>
@@ -520,7 +520,7 @@
     </div>
   </div>
 
-  <!-- ── TAB: MODIFICA CLIENTE ── -->
+  <!-- TAB: MODIFICA CLIENTE -->
   <div id="tab-modifica" class="hidden">
     <div class="page-header">
       <div>
@@ -585,7 +585,8 @@
 const token = localStorage.getItem('token');
 const officinaRaw = localStorage.getItem('officina');
 if (!token || !officinaRaw) { window.location.href = '/login.html'; }
-else {
+else 
+{
   const off = JSON.parse(officinaRaw);
   document.getElementById('nome-officina-txt').textContent = off.nome_officina || 'Officina';
   document.getElementById('avatar-initial').textContent = (off.nome_officina || 'O')[0].toUpperCase();
@@ -593,7 +594,8 @@ else {
 
 // ── TAB SWITCHING ─────────────────────────────────────────
 const TABS = ['dashboard','nuovo-cliente','registro','modifica'];
-function switchTab(name) {
+function switchTab(name) 
+{
   TABS.forEach(t => document.getElementById('tab-' + t).classList.toggle('hidden', t !== name));
   document.querySelectorAll('.nav-item').forEach((btn, i) => btn.classList.toggle('active', TABS[i] === name));
   if (name === 'registro') renderRegistro();
@@ -603,21 +605,26 @@ function switchTab(name) {
 let elencoScadenze = [];
 let filtroAttivo = 'tutti';
 
-async function aggiornaDatiTabella() {
-  try {
+async function aggiornaDatiTabella() 
+{
+  try 
+  {
     const res = await fetch('/api/scadenze', { headers: { 'Authorization': `Bearer ${token}` } });
     if (!res.ok) throw new Error('Errore ' + res.status);
     elencoScadenze = await res.json();
     renderUrgenti();
     aggiornaContatori();
-  } catch (err) {
+  } 
+  catch (err) 
+  {
     console.error(err);
     document.getElementById('tabella-urgenti').innerHTML =
       `<tr><td colspan="7" class="empty-state" style="color:#ef4444;">Errore: ${err.message}</td></tr>`;
   }
 }
 
-function aggiornaContatori() {
+function aggiornaContatori() 
+{
   const oggi = new Date(); oggi.setHours(0,0,0,0);
   let mese = 0, scaduti = 0;
   elencoScadenze.forEach(item => {
@@ -632,8 +639,9 @@ function aggiornaContatori() {
   document.getElementById('stat-scadute').textContent = scaduti;
 }
 
-// ── PANORAMICA: urgenti only (scaduti + entro 30gg) ───────
-function renderUrgenti() {
+// PANORAMICA: urgenti only (scaduti + entro 30gg) 
+function renderUrgenti() 
+{
   const tbody = document.getElementById('tabella-urgenti');
   const oggi = new Date(); oggi.setHours(0,0,0,0);
   const q = (document.getElementById('search-input').value || '').toLowerCase();
@@ -650,7 +658,8 @@ function renderUrgenti() {
     return isUrgent && matchTipo && matchQ;
   });
 
-  if (urgenti.length === 0) {
+  if (urgenti.length === 0) 
+  {
     tbody.innerHTML = `<tr><td colspan="7" class="empty-state">Nessun intervento urgente. ✓</td></tr>`;
     return;
   }
@@ -680,8 +689,9 @@ function renderUrgenti() {
   });
 }
 
-// ── REGISTRO CLIENTI: regolari only ───────────────────────
-function renderRegistro() {
+// REGISTRO CLIENTI: regolari only 
+function renderRegistro() 
+{
   const tbody = document.getElementById('tabella-registro');
   const oggi = new Date(); oggi.setHours(0,0,0,0);
   const q = (document.getElementById('registro-search').value || '').toLowerCase();
@@ -697,7 +707,8 @@ function renderRegistro() {
     return isOk && matchQ;
   });
 
-  if (regolari.length === 0) {
+  if (regolari.length === 0) 
+  {
     tbody.innerHTML = `<tr><td colspan="7" class="empty-state">Nessun cliente con scadenza regolare.</td></tr>`;
     return;
   }
@@ -722,8 +733,9 @@ function renderRegistro() {
   });
 }
 
-// ── FILTER TABS ───────────────────────────────────────────
-function setFiltro(tipo) {
+// FILTER TABS 
+function setFiltro(tipo) 
+{
   filtroAttivo = tipo;
   ['tutti','revisione','tagliando'].forEach(t => {
     document.getElementById('ftab-' + t).classList.toggle('active', t === tipo);
@@ -733,8 +745,9 @@ function setFiltro(tipo) {
 
 document.getElementById('search-input').addEventListener('input', renderUrgenti);
 
-// ── ADD CLIENT ────────────────────────────────────────────
-async function aggiungiCliente(e) {
+// ADD CLIENT 
+async function aggiungiCliente(e) 
+{
   e.preventDefault();
   const payload = {
     nome: document.getElementById('form-nome').value.trim(),
@@ -744,7 +757,8 @@ async function aggiungiCliente(e) {
     tipo_scadenza: document.getElementById('form-tipo').value,
     data_scadenza: document.getElementById('form-data').value,
   };
-  try {
+  try 
+  {
     const res = await fetch('/api/scadenze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -756,13 +770,16 @@ async function aggiungiCliente(e) {
     document.getElementById('form-cliente').reset();
     await aggiornaDatiTabella();
     switchTab('dashboard');
-  } catch (err) { mostraToast('✕ ' + err.message, 'error'); }
+  } 
+  catch (err) { mostraToast('✕ ' + err.message, 'error'); }
 }
 
-// ── MODIFICA CLIENT ───────────────────────────────────────
-function filtraClientiModifica(q) {
+// MODIFICA CLIENT 
+function filtraClientiModifica(q) 
+{
   const lista = document.getElementById('modifica-lista');
-  if (!q.trim()) {
+  if (!q.trim()) 
+  {
     lista.innerHTML = `<div class="empty-state">Inizia a digitare per cercare un cliente…</div>`;
     return;
   }
@@ -772,7 +789,8 @@ function filtraClientiModifica(q) {
     (item.nome||'').toLowerCase().includes(lower) ||
     (item.cognome||'').toLowerCase().includes(lower)
   );
-  if (!matches.length) {
+  if (!matches.length)
+  {
     lista.innerHTML = `<div class="empty-state">Nessun cliente trovato.</div>`;
     return;
   }
@@ -790,7 +808,8 @@ function filtraClientiModifica(q) {
     </div>`).join('');
 }
 
-function apriModifica(item) {
+function apriModifica(item) 
+{
   document.getElementById('modifica-cliente-id').value = item.cliente_id;
   document.getElementById('modifica-scadenza-id').value = item.scadenza_id;
   document.getElementById('modifica-nome').value = item.nome || '';
@@ -805,13 +824,15 @@ function apriModifica(item) {
   document.getElementById('modifica-form-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function chiudiModifica() {
+function chiudiModifica() 
+{
   document.getElementById('modifica-form-wrap').classList.add('hidden');
   document.getElementById('modifica-search').value = '';
   document.getElementById('modifica-lista').innerHTML = `<div class="empty-state">Inizia a digitare per cercare un cliente…</div>`;
 }
 
-async function salvaModifica(e) {
+async function salvaModifica(e) 
+{
   e.preventDefault();
   const clienteId = document.getElementById('modifica-cliente-id').value;
   const payload = {
@@ -823,7 +844,8 @@ async function salvaModifica(e) {
     data_scadenza: document.getElementById('modifica-data').value,
     scadenza_id: document.getElementById('modifica-scadenza-id').value,
   };
-  try {
+  try 
+  {
     const res = await fetch(`/api/clienti/${clienteId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -834,11 +856,13 @@ async function salvaModifica(e) {
     mostraToast('✓ Cliente aggiornato!', 'success');
     chiudiModifica();
     await aggiornaDatiTabella();
-  } catch (err) { mostraToast('✕ ' + err.message, 'error'); }
+  } 
+  catch (err) { mostraToast('✕ ' + err.message, 'error'); }
 }
 
 // ── TOAST ─────────────────────────────────────────────────
-function mostraToast(msg, tipo) {
+function mostraToast(msg, tipo)
+{
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.style.background = '#161616';

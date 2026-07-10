@@ -3,7 +3,8 @@ session_start();
 include 'includes/db.php';
 
 // Check login
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) 
+{
     header('Location: login.php');
     exit();
 }
@@ -14,7 +15,8 @@ $stmt->bind_param("i", $_SESSION['user_id']);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 
-if ($user['role'] !== 'admin') {
+if ($user['role'] !== 'admin') 
+{
     header('Location: login.php');
     exit();
 }
@@ -98,14 +100,16 @@ $params = [];
 $types  = "";
 
 // Filter: verified
-if ($verified_filter !== '') {
+if ($verified_filter !== '') 
+{
     $query .= " AND u.email_verified = ?";
     $params[] = $verified_filter;
     $types .= "i";
 }
 
 // Search
-if (!empty($search)) {
+if (!empty($search)) 
+{
     $query .= " AND (
         u.username LIKE ?
         OR u.name LIKE ?
@@ -124,14 +128,16 @@ $query .= ($order === 'za') ? " ORDER BY u.username DESC" : " ORDER BY u.usernam
 
 $stmt = $conn->prepare($query);
 
-if (!empty($params)) {
+if (!empty($params)) 
+{
     $stmt->bind_param($types, ...$params);
 }
 
 $stmt->execute();
 $result = $stmt->get_result();
 
-if ($result->num_rows > 0) {
+if ($result->num_rows > 0) 
+{
     echo '<table class="report-table">';
     echo '
     <thead>
@@ -146,7 +152,8 @@ if ($result->num_rows > 0) {
     </thead>
     <tbody>';
 
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) 
+    {
 
         $verifiedBadge = $row['email_verified']
             ? '<span style="color:green;font-weight:700;">✔ Sì</span>'
@@ -163,7 +170,9 @@ if ($result->num_rows > 0) {
     }
 
     echo '</tbody></table>';
-} else {
+} 
+else 
+{
     echo '<p>Nessun utente trovato.</p>';
 }
 

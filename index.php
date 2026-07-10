@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Se l’utente è già loggato, mandalo al dashboard
+// Se l’utente è già loggato, viene mandato al dashboard
 if (isset($_SESSION['user_id'])) 
 {
     header('Location: dashboard.php');

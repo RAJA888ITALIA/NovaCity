@@ -1,4 +1,3 @@
-cat > /mnt/user-data/outputs/autofficina/public/login.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -209,10 +208,8 @@ cat > /mnt/user-data/outputs/autofficina/public/login.html << 'HTMLEOF'
   <!-- Contenitore centrale perfettamente allineato e bilanciato -->
   <div class="relative z-10 w-full max-w-4xl flex flex-col md:flex-row gap-12 md:gap-8 items-center justify-center my-auto">
 
-    <!-- ============================================================
-         COLONNA SINISTRA — Illustrazione / branding
-         Visibile solo su schermi md+
-    ============================================================ -->
+    <!-- COLONNA SINISTRA — Illustrazione / branding
+         Visibile solo su schermi md+ -->
     <div class="hidden md:flex flex-col flex-1 items-start gap-8 animate-fade" style="animation-delay: 0.1s;">
 
       <!-- Logo grande -->
@@ -274,9 +271,7 @@ cat > /mnt/user-data/outputs/autofficina/public/login.html << 'HTMLEOF'
 
     </div>
 
-    <!-- ============================================================
-         COLONNA DESTRA — Card di Login
-    ============================================================ -->
+    <!--COLONNA DESTRA — Card di Login -->
     <div class="w-full md:max-w-md flex-shrink-0 px-1">
 
       <div class="card p-7 md:p-8 pt-10">
@@ -411,7 +406,8 @@ cat > /mnt/user-data/outputs/autofficina/public/login.html << 'HTMLEOF'
     // ──────────────────────────────────────────────────────────
     // TOGGLE VISIBILITÀ PASSWORD
     // ──────────────────────────────────────────────────────────
-    function togglePassword() {
+    function togglePassword() 
+    {
       const input  = document.getElementById('login-password');
       const eyeOn  = document.getElementById('eye-open');
       const eyeOff = document.getElementById('eye-closed');
@@ -425,7 +421,8 @@ cat > /mnt/user-data/outputs/autofficina/public/login.html << 'HTMLEOF'
     // TOGGLE CHECKBOX RICORDAMI
     // ──────────────────────────────────────────────────────────
     let remember = false;
-    function toggleRemember() {
+    function toggleRemember()
+    {
       remember = !remember;
       const btn   = document.getElementById('remember-btn');
       const check = document.getElementById('check-icon');
@@ -435,10 +432,9 @@ cat > /mnt/user-data/outputs/autofficina/public/login.html << 'HTMLEOF'
       check.classList.toggle('hidden', !remember);
     }
 
-    // ──────────────────────────────────────────────────────────
-    // GESTIONE LOGIN
-    // ──────────────────────────────────────────────────────────
-    async function handleLogin(e) {
+    // GESTIONE LOGIN 
+    async function handleLogin(e) 
+    {
       e.preventDefault();
 
       const email    = document.getElementById('login-email').value.trim();
@@ -469,7 +465,8 @@ cat > /mnt/user-data/outputs/autofficina/public/login.html << 'HTMLEOF'
       btnLoad.classList.remove('hidden');
       btnLoad.style.display = 'flex';
 
-      try {
+      try 
+      {
         const res = await fetch('/api/auth/login', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -478,7 +475,8 @@ cat > /mnt/user-data/outputs/autofficina/public/login.html << 'HTMLEOF'
 
         const data = await res.json();
 
-        if (!res.ok) {
+        if (!res.ok) 
+        {
           throw new Error(data.errore || 'Credenziali non valide.');
         }
 
@@ -487,7 +485,9 @@ cat > /mnt/user-data/outputs/autofficina/public/login.html << 'HTMLEOF'
 
         window.location.href = '/dashboard.html';
 
-      } catch (err) {
+      } 
+      catch (err) 
+      {
         errMsg.textContent = err.message || 'Errore di connessione. Riprova.';
         errBox.classList.add('show');
         document.getElementById('login-email').classList.add('error');
@@ -500,12 +500,11 @@ cat > /mnt/user-data/outputs/autofficina/public/login.html << 'HTMLEOF'
       }
     }
 
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('token')) 
+    {
       window.location.href = '/';
     }
   </script>
 
 </body>
 </html>
-HTMLEOF
-echo "done"

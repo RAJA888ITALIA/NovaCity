@@ -13,7 +13,8 @@ use PHPMailer\PHPMailer\Exception;
 $error = "";
 $success = "";
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") 
+{
     $email = trim($_POST['email']);
 
     $stmt = $conn->prepare("SELECT id, name FROM users WHERE username = ?");
@@ -21,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($result->num_rows === 1) {
+    if ($result->num_rows === 1)
+    {
         $user = $result->fetch_assoc();
         $stmt->close(); // Close first stmt before reusing variable
 

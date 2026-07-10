@@ -100,7 +100,8 @@ $category_filter = $_GET['categoria'] ?? '';
                 </tr>
               </thead>
               <tbody>';
-            while ($row = $result->fetch_assoc()) {
+            while ($row = $result->fetch_assoc()) 
+            {
                 echo '<tr>';
                 echo '<td>' . htmlspecialchars($row['report_id']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['user_id']) . '</td>';
@@ -111,7 +112,8 @@ $category_filter = $_GET['categoria'] ?? '';
                 echo '</tr>';
             }
             echo '</tbody></table>';
-        } else 
+        } 
+        else 
         {
             echo '<p>Nessun report trovato.</p>';
         }

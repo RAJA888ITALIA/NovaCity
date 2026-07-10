@@ -1,7 +1,6 @@
 -- =====================================================
 -- NovaCity - GitHub Safe Database Export
--- Sensitive/user data removed for public repository
--- Only table structures are included
+-- Sensitive/user data removed (for public repository)
 -- =====================================================
 
 -- phpMyAdmin SQL Dump

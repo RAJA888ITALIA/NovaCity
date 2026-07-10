@@ -360,7 +360,8 @@
 
   <script>
     // Funzione per estrarre i parametri dall'URL
-    function getParam(nome, fallback) {
+    function getParam(nome, fallback) 
+    {
       return new URLSearchParams(window.location.search).get(nome) || fallback;
     }
 
@@ -372,7 +373,8 @@
     const CITTA     = getParam('citta', 'Via Roma 14 · Milano');
     const TELEFONO  = getParam('tel', '02 1234 5678');
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => 
+      {
       // 1. Inizializzazione Elementi Statici / di Default
       document.getElementById('nome-officina').textContent  = OFFICINA;
       document.getElementById('citta-officina').textContent = CITTA;
@@ -400,7 +402,8 @@
     });
 
     // Funzione per caricare i dati asincroni dal Database tramite API pubblico
-    async function caricaStoricoEAnagraficaCliente(targa, dataScadenzaUrl) {
+    async function caricaStoricoEAnagraficaCliente(targa, dataScadenzaUrl) 
+    {
       if (!targa || targa === 'AB 123 CD') {
         // Se non viene passata una targa reale nell'URL, gestisci il layout con i dati URL standard
         aggiornaBoxScadenzaPrimaria(dataScadenzaUrl);
@@ -411,7 +414,8 @@
         return;
       }
 
-      try {
+      try 
+      {
         const res = await fetch(`/api/pubblico/veicolo/${targa}`);
         if (!res.ok) throw new Error('Vettura non trovata nel sistema.');
 
@@ -441,7 +445,8 @@
         container.innerHTML = '';
 
         const elencoScadenze = dati.scadenze || [];
-        if (elencoScadenze.length === 0) {
+        if (elencoScadenze.length === 0) 
+        {
           container.innerHTML = `<p class="text-xs font-mono text-slate-400 text-center py-2">Nessuna altra scadenza attiva rilevata.</p>`;
           return;
         }
@@ -463,9 +468,11 @@
           container.appendChild(div);
         });
 
-      } catch (err) {
+      } 
+      catch (err) 
+      {
         console.error(err);
-        // Fallback elegante sui dati URL in caso di errore di rete/API
+        // Fallback (styled) sui dati URL in caso di errore di rete/API
         aggiornaBoxScadenzaPrimaria(dataScadenzaUrl);
         document.getElementById('txt-targa').textContent = targa.toUpperCase();
         document.getElementById('txt-proprietario').textContent = "Gentile Cliente";
@@ -475,7 +482,8 @@
     }
 
     // Funzione di utility per calcolare e stampare i giorni rimanenti della scadenza primaria
-    function aggiornaBoxScadenzaPrimaria(dataIso) {
+    function aggiornaBoxScadenzaPrimaria(dataIso) 
+    {
       const dataScad = new Date(dataIso + 'T00:00:00');
       
       // Formatta la data in italiano esplicitato
@@ -489,38 +497,47 @@
       const testoEl  = document.getElementById('testo-giorni');
       const dotEl    = alertEl.querySelector('div');
 
-      if (gg < 0) {
+      if (gg < 0) 
+      {
         testoEl.textContent = `Scaduta da ${Math.abs(gg)} giorni — prenota subito`;
         alertEl.style.background = '#fef2f2';
         alertEl.style.borderColor = '#fecaca';
         testoEl.style.color = '#dc2626';
         if(dotEl) dotEl.style.background = '#ef4444';
-      } else if (gg === 0) {
+      }
+      else if (gg === 0)
+      {
         testoEl.textContent = 'Scade oggi — prenota subito';
         alertEl.style.background = '#fef2f2';
         alertEl.style.borderColor = '#fecaca';
         testoEl.style.color = '#dc2626';
         if(dotEl) dotEl.style.background = '#ef4444';
-      } else if (gg <= 14) {
+      } 
+      else if (gg <= 14)
+      {
         testoEl.textContent = `Mancano ${gg} giorni — prenota presto`;
         alertEl.style.background = '#fff7ed';
         alertEl.style.borderColor = '#fed7aa';
         testoEl.style.color = '#c2410c';
-      } else {
+      } 
+      else 
+      {
         testoEl.textContent = `Mancano ${gg} giorni — prenota quando vuoi`;
         if(dotEl) dotEl.style.animation = 'none';
       }
     }
 
     // Gestione dell'invio del Form ed effetti di transizione
-    function inviaRichiesta(e) {
+    function inviaRichiesta(e) 
+    {
       e.preventDefault();
 
       const data = document.getElementById('ap-data').value;
       const ora  = document.getElementById('ap-ora').value;
       const note = document.getElementById('ap-note').value.trim();
 
-      if (!data || !ora) {
+      if (!data || !ora) 
+      {
         const campi = [!data && 'ap-data', !ora && 'ap-ora'].filter(Boolean);
         campi.forEach(id => {
           const el = document.getElementById(id);
@@ -540,7 +557,7 @@
         </svg>
         Invio in corso...`;
 
-      // Simulazione invio (Sostituire in produzione con fetch('/api/appuntamenti', {...}))
+      // Simulazione invio
       setTimeout(() => {
         const dataFormattata = new Date(data + 'T00:00:00')
           .toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
